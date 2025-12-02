@@ -107,7 +107,7 @@ export default function VehicleForm() {
     };
 
     try {
-      const resp = await fetch("https://example.com/api/vehicle", {
+      const resp = await fetch("/api/vehicle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
