@@ -179,10 +179,6 @@ export default function VehicleForm() {
 
   return (
     <div className="app">
-      <header>
-        <h1>Sistema Norteador — Cadastro de Veículos</h1>
-      </header>
-
       <section className="card" aria-labelledby="form-title">
         <h2 id="form-title" className="small">Preencha os dados do veículo</h2>
 
