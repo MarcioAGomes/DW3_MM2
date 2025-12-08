@@ -32,6 +32,7 @@ header h1 {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 6px 18px rgba(22, 28, 37, 0.06);
+  margin-bottom: 24px;
 }
 
 .form-row {
@@ -41,30 +42,23 @@ header h1 {
 }
 
 .form-row .field {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
-/* CLASSES DE AJUSTE DE LARGURA */
-
-/* Campo Ano: Tamanho menor (aprox. 25% da linha) */
 .narrow-field {
-  /* Garante que o campo tenha cerca de 25% da largura total, subtraindo o gap para evitar quebra */
-  flex: 0 0 calc(25% - 9px); 
+  flex: 0 0 30%;
 }
 
-/* Campo Modelo: Tamanho médio (aprox. 35% da linha) */
 .medium-field {
-  /* Garante que o campo tenha cerca de 35% da largura total, subtraindo o gap para evitar quebra */
-  flex: 0 0 calc(35% - 7.8px);
+  flex: 0 0 40%;
 }
 
-/* Campo Placa/Marca: Ocupa o restante do espaço */
 .wide-field {
-  flex: 1; 
+  flex: 1;
+  min-width: 0;
 }
-
 
 label {
   font-size: 0.85rem;
@@ -78,6 +72,7 @@ select {
   border-radius: 6px;
   border: 1px solid #e5e7eb;
   font-size: 0.95rem;
+  width: 100%;
 }
 
 input:focus {
@@ -126,4 +121,39 @@ button[disabled] {
 .small {
   font-size: 0.85rem;
   color: var(--muted);
+}
+
+.vehicle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vehicle-item {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vehicle-info {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.vehicle-details {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.delete-btn {
+  background: var(--danger);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
+  font-size: 0.85rem;
 }
