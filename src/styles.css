@@ -46,6 +46,26 @@ header h1 {
   flex-direction: column;
 }
 
+/* CLASSES DE AJUSTE DE LARGURA */
+
+/* Campo Ano: Tamanho menor (aprox. 25% da linha) */
+.narrow-field {
+  /* Garante que o campo tenha cerca de 25% da largura total, subtraindo o gap para evitar quebra */
+  flex: 0 0 calc(25% - 9px); 
+}
+
+/* Campo Modelo: Tamanho médio (aprox. 35% da linha) */
+.medium-field {
+  /* Garante que o campo tenha cerca de 35% da largura total, subtraindo o gap para evitar quebra */
+  flex: 0 0 calc(35% - 7.8px);
+}
+
+/* Campo Placa/Marca: Ocupa o restante do espaço */
+.wide-field {
+  flex: 1; 
+}
+
+
 label {
   font-size: 0.85rem;
   margin-bottom: 6px;

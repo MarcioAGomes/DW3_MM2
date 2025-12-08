@@ -26,9 +26,14 @@ export default function VehicleForm() {
 
     switch (name) {
       case "placa": {
-        const re = /^[A-Z0-9-]{4,8}$/i;
         if (!value) return "Placa é obrigatória.";
-        if (!re.test(value) && value) return "Placa inválida (use 4-8 caracteres alfanuméricos).";
+
+        const valueLimpo = value.replace(/-/g, '');
+        const rePlaca = /^[A-Z]{3}[0-9A-Z]{4,5}$/i; 
+        
+        if (valueLimpo.length < 4 || valueLimpo.length > 8 || !rePlaca.test(valueLimpo)) {
+          return "Placa inválida (ex: ABC1D23 ou ABC-1234).";
+        }
         return "";
       }
       case "marca":
@@ -68,7 +73,11 @@ export default function VehicleForm() {
     let { name, value } = e.target;
     
     if (name === "ano") {
-        value = value.replace(/[^0-9]/g, ''); 
+      value = value.replace(/[^0-9]/g, ''); 
+    }
+    
+    if (name === "placa") {
+      value = value.toUpperCase().replace(/[^A-Z0-9-]/g, ''); 
     }
     
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -112,8 +121,10 @@ export default function VehicleForm() {
     
     setSubmitting(true);
 
+    const placaLimpa = form.placa.toUpperCase().replace(/-/g, ''); 
+
     const payload = {
-      placa: form.placa.toUpperCase(),
+      placa: placaLimpa,
       marca: form.marca,
       modelo: form.modelo,
       ano: Number(form.ano),
@@ -138,7 +149,9 @@ export default function VehicleForm() {
       } else {
         const data = await resp.json().catch(() => null);
         setResultMessage("Veículo salvo com sucesso." + (data ? " Resposta: " + JSON.stringify(data) : ""));
+        
         setForm(initialForm);
+        setErrors({}); 
         setTouched({}); 
       }
     } catch (err) {
@@ -155,7 +168,7 @@ export default function VehicleForm() {
 
       <form onSubmit={handleSubmit} noValidate>
         <div className="form-row">
-          <div className="field">
+          <div className="field wide-field">
             <label htmlFor="placa">Placa</label>
             <input
               id="placa"
@@ -167,10 +180,13 @@ export default function VehicleForm() {
               maxLength={8}
               ref={placaRef} 
             />
-            {(touched.placa && errors.placa) ? <div className="error">{errors.placa}</div> : <div className="help">Formato: 4–8 caracteres alfanuméricos</div>}
+            {(touched.placa && errors.placa) 
+              ? <div className="error">{errors.placa}</div> 
+              : <div className="help">Formato: 4–8 caracteres alfanuméricos (exige letras)</div>
+            }
           </div>
 
-          <div className="field">
+          <div className="field narrow-field">
             <label htmlFor="ano">Ano</label>
             <input 
               id="ano" 
@@ -186,13 +202,13 @@ export default function VehicleForm() {
         </div>
         
         <div className="form-row">
-          <div className="field">
+          <div className="field wide-field">
             <label htmlFor="marca">Marca</label>
             <input id="marca" name="marca" value={form.marca} onChange={handleChange} onBlur={handleBlur} placeholder="ex: Toyota" />
             {(touched.marca && errors.marca) && <div className="error">{errors.marca}</div>}
           </div>
 
-          <div className="field">
+          <div className="field medium-field">
             <label htmlFor="modelo">Modelo</label>
             <input id="modelo" name="modelo" value={form.modelo} onChange={handleChange} onBlur={handleBlur} placeholder="ex: Corolla" />
             {(touched.modelo && errors.modelo) && <div className="error">{errors.modelo}</div>}
@@ -213,8 +229,13 @@ export default function VehicleForm() {
           </button>
 
           <div className="result">
-            <span className="small">{isValid ? "Formulário válido" : "Formulário inválido"}</span>
-            {resultMessage && <div style={{ marginTop: 8 }}>{resultMessage}</div>}
+            {resultMessage ? (
+              <div style={{ marginTop: 8 }}>{resultMessage}</div>
+            ) : (
+              (Object.keys(touched).length > 0) && (
+                <span className="small">{isValid ? "Formulário válido" : "Formulário inválido"}</span>
+              )
+            )}
           </div>
         </div>
       </form>
